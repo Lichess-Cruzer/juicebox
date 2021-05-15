@@ -82,15 +82,15 @@ async function createInitialUsers() {
     });
     await createUser({
       username: "sandra",
-      password: "2sandy4me",
+      password: "quepasa",
       name: "Just Sandra",
-      location: "Ain't tellin'",
+      location: "San Diego, CA'",
     });
     await createUser({
       username: "glamgal",
-      password: "soglam",
+      password: "glamglamclamclam",
       name: "Joshua",
-      location: "Upper East Side",
+      location: "Cayucos, CA",
     });
 
     console.log("Finished creating users!");
