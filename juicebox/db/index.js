@@ -1,10 +1,6 @@
 const { Client } = require("pg"); // imports the pg module
 
-const client = new Client("postgres://localhost:5432/juicebox-dev");
-
-/**
- * USER Methods
- */
+const client = new Client("postgres://localhost:5432/juiceboxdev");
 
 async function createUser({ username, password, name, location }) {
   try {
@@ -186,6 +182,19 @@ async function getAllPosts() {
   }
 }
 
+async function getAllTags() {
+  try {
+    const { rows } = await client.query(`
+      SELECT *
+      FROM tags;
+    `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getPostsByUser(userId) {
   try {
     const { rows: postIds } = await client.query(`
@@ -256,19 +265,6 @@ async function createPostTag(postId, tagId) {
     `,
       [postId, tagId]
     );
-  } catch (error) {
-    throw error;
-  }
-}
-
-async function getAllTags() {
-  try {
-    const { rows } = await client.query(`
-      SELECT *
-      FROM tags;
-    `);
-
-    return rows;
   } catch (error) {
     throw error;
   }
@@ -352,6 +348,25 @@ async function getPostsByTagName(tagName) {
   }
 }
 
+async function getUserByUsername(username) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      SELECT *
+      FROM users
+      WHERE username=$1;
+    `,
+      [username]
+    );
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   client,
   createUser,
@@ -367,5 +382,6 @@ module.exports = {
   addTagsToPost,
   getPostById,
   getPostsByTagName,
-  getAllTags
+  getAllTags,
+  getUserByUsername,
 };
